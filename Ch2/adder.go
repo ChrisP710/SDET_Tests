@@ -1,9 +1,7 @@
 package main
 
 func Add(x, y int) int {
-	sum := (x + y)
-
-	return sum
+	return x + y
 }
 
 func main() {
