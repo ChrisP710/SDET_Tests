@@ -8,10 +8,9 @@ import (
 )
 
 func TestCountdown(t *testing.T) {
+
 	t.Run("prints 3 to Go!", func(t *testing.T) {
-
 		buffer := &bytes.Buffer{}
-
 		Countdown(buffer, &SpyCountdownOperations{})
 
 		got := buffer.String()
@@ -58,14 +57,6 @@ func TestConfigurableSleeper(t *testing.T) {
 	}
 }
 
-type SpySleeper struct {
-	Calls int
-}
-
-func (s *SpySleeper) Sleep() {
-	s.Calls++
-}
-
 type SpyCountdownOperations struct {
 	Calls []string
 }
@@ -81,3 +72,11 @@ func (s *SpyCountdownOperations) Write(p []byte) (n int, err error) {
 
 const write = "write"
 const sleep = "sleep"
+
+type SpyTime struct {
+	durationSlept time.Duration
+}
+
+func (s *SpyTime) Sleep(duration time.Duration) {
+	s.durationSlept = duration
+}
