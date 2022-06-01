@@ -49,17 +49,32 @@ func main() {
 	}
 
 	// Grabs key "doc" from nested struct dbDoc
-	key := data["rows"].([]interface{})[0].(map[string]interface{})["doc"]
+	// key := data["rows"].([]interface{})[20].(map[string]interface{})["doc"]
+	// fmt.Println(key)
 
-	// key, _ := data["rows"].(map[string]interface{})["doc"]
+	// Note: 311 Unused aka Null
+	keyTemp := make([]interface{}, 1000)
 
-	outputFile, err := json.MarshalIndent(key, "", "  ")
-	if err != nil {
-		log.Fatalf("Error reading file!: %s", err.Error())
+	for i := 0; i < 1000; i++ {
+		keyTemp[i] = data["rows"].([]interface{})[i].(map[string]interface{})["doc"]
+		outputFile, err := json.MarshalIndent(keyTemp, "", "  ")
+		if err != nil {
+			log.Fatalf("Error reading file!: %s", err.Error())
+		}
+
+		err = ioutil.WriteFile("testtest2.json", outputFile, 0644)
+		if err != nil {
+			log.Fatalf("Error reading file!: %s", err.Error())
+		}
 	}
 
-	err = ioutil.WriteFile("test999.json", outputFile, 0644)
-	if err != nil {
-		log.Fatalf("Error reading file!: %s", err.Error())
-	}
+	// outputFile, err := json.MarshalIndent(key, "", "  ")
+	// if err != nil {
+	// 	log.Fatalf("Error reading file!: %s", err.Error())
+	// }
+
+	// err = ioutil.WriteFile("test999.json", outputFile, 0644)
+	// if err != nil {
+	// 	log.Fatalf("Error reading file!: %s", err.Error())
+	// }
 }
