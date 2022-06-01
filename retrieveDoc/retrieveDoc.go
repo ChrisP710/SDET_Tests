@@ -6,15 +6,10 @@ import (
 	"log"
 )
 
-// import (
-// 	"io/ioutil"
-// 	"encoding/json"
-// )
-
 type dbDocRows struct {
 	total_rows int   `json:"total_rows"`
 	offset     int   `json:"offset"`
-	rows       dbDoc `json:"dbDoc`
+	rows       dbDoc `json:"rows"`
 }
 
 type dbDoc struct {
@@ -45,7 +40,7 @@ func main() {
 		log.Fatalf("Error reading file!: %s", err.Error())
 	}
 	// fmt.Println("hello", fileRead)
-	// data := make([]dbDocRows, 0)
+
 	var data map[string]interface{}
 
 	err = json.Unmarshal([]byte(fileRead), &data)
@@ -53,7 +48,18 @@ func main() {
 		log.Fatalf("Error reading file!: %s", err.Error())
 	}
 
-	outputFile, err := json.MarshalIndent(data, "", "  ")
+	// Grabs key "doc" from nested struct dbDoc
+	key := data["rows"].([]interface{})[0].(map[string]interface{})["doc"]
 
-	err = ioutil.WriteFile("test1.json", outputFile, 0644)
+	// key, _ := data["rows"].(map[string]interface{})["doc"]
+
+	outputFile, err := json.MarshalIndent(key, "", "  ")
+	if err != nil {
+		log.Fatalf("Error reading file!: %s", err.Error())
+	}
+
+	err = ioutil.WriteFile("test999.json", outputFile, 0644)
+	if err != nil {
+		log.Fatalf("Error reading file!: %s", err.Error())
+	}
 }
