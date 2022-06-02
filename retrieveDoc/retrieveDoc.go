@@ -23,18 +23,23 @@ type valueNest struct {
 	rev string `json: "rev"`
 }
 
-// type docNest struct {
-// 	_id         string `json:"_id"`
-// 	_rev        string `json:"_rev"`
-// 	source      string `json:"source"`
-// 	redirecturl string `json:"redirecturl"`
-// 	docType     string `json:"type"`
-// 	whitelabel  string `json:"whitelabel"`
-// 	created     string `json:"created"`
-// 	modified    string `json:"modified"`
-// }
+type docNest struct {
+	_id         string `json:"_id"`
+	_rev        string `json:"_rev"`
+	source      string `json:"source"`
+	redirecturl string `json:"redirecturl"`
+	docType     string `json:"type"`
+	whitelabel  string `json:"whitelabel"`
+	created     string `json:"created"`
+	modified    string `json:"modified"`
+}
 
 func main() {
+	read1()
+	read2()
+}
+
+func read1() {
 	fileRead, err := ioutil.ReadFile("cpdata.json")
 	if err != nil {
 		log.Fatalf("Error reading file!: %s", err.Error())
@@ -53,16 +58,20 @@ func main() {
 	// fmt.Println(key)
 
 	// Note: 311 Unused aka Null
-	keyTemp := make([]interface{}, 1000)
+	keyTemp := make([]interface{}, 688)
 
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < len(keyTemp); i++ {
+		delete(data["rows"].([]interface{})[i].(map[string]interface{})["doc"].(map[string]interface{}), "_rev")
+
+		// keyTemp[i] = data["rows"].([]interface{})[i].(map[string]interface{})["doc"].(map[string]interface{})["_rev"]
+
 		keyTemp[i] = data["rows"].([]interface{})[i].(map[string]interface{})["doc"]
 		outputFile, err := json.MarshalIndent(keyTemp, "", "  ")
 		if err != nil {
 			log.Fatalf("Error reading file!: %s", err.Error())
 		}
 
-		err = ioutil.WriteFile("testtest2.json", outputFile, 0644)
+		err = ioutil.WriteFile("doc7.json", outputFile, 0644)
 		if err != nil {
 			log.Fatalf("Error reading file!: %s", err.Error())
 		}
@@ -77,4 +86,30 @@ func main() {
 	// if err != nil {
 	// 	log.Fatalf("Error reading file!: %s", err.Error())
 	// }
+}
+
+func read2() {
+	fileRead, err := ioutil.ReadFile("doc1.json")
+	if err != nil {
+		log.Fatalf("Error reading file!: %s", err.Error())
+	}
+	// fmt.Println("hello", fileRead)
+
+	var data []interface{}
+
+	err = json.Unmarshal([]byte(fileRead), &data)
+	if err != nil {
+		log.Fatalf("Error reading file!: %s", err.Error())
+	}
+	// fmt.Println("hello", data[2])
+
+	// var data2 map[string]interface{}
+
+	// Grabs key "doc" from nested struct dbDoc
+	// key := data["_rev"]
+	// defer fmt.Println(key, "hello")
+
+	// Note: 311 Unused aka Null
+	// keyTemp := make([]interface{}, 1000)
+
 }
