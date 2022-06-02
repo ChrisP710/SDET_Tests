@@ -61,7 +61,7 @@ func read1() {
 
 	// Try to avoid using interface{}
 
-	// Array of Map Interfaces
+	// Array of Interfaces - Note: In the future use an array of map[string]interface{}
 	keyTemp := make([]interface{}, 0)
 
 	for _, v := range data["rows"].([]interface{}) {
@@ -86,7 +86,7 @@ func read1() {
 	}
 
 	// Writes to new file Note: Change and put outside loop
-	err = ioutil.WriteFile("doc1.json", outputFile, 0644)
+	err = ioutil.WriteFile("docDataDB.json", outputFile, 0644)
 	if err != nil {
 		log.Fatalf("Error reading file!: %s", err.Error())
 	}
