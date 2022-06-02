@@ -36,7 +36,6 @@ type valueNest struct {
 
 func main() {
 	read1()
-	// read2()
 }
 
 func read1() {
@@ -60,8 +59,7 @@ func read1() {
 	// key := data["rows"].([]interface{})[20].(map[string]interface{})["doc"]
 	// fmt.Println(key)
 
-	// Used to temporarily store value of each array before marshalling and writing it to a new file.
-	// Note: 311 Unused aka Null
+	// Try to avoid using interface{}
 
 	// Array of Map Interfaces
 	keyTemp := make([]interface{}, 0)
@@ -72,79 +70,24 @@ func read1() {
 
 		// Test variable I used to test the output and see if "_rev" was being returned in array
 		// keyTemp[i] = data["rows"].([]interface{})[i].(map[string]interface{})["doc"].(map[string]interface{})["_rev"]
-		keyTemp = append(keyTemp, v.(map[string]interface{})["doc"])
-		// Grabs just the "doc" struct
-		// keyTemp[i] = data["rows"].([]interface{})[i].(map[string]interface{})["doc"]
 
-		// Marshals file and indents in typical Json Format
-		// outputFile, err := json.MarshalIndent(keyTemp, "", "  ")
-		// if err != nil {
-		// 	log.Fatalf("Error reading file!: %s", err.Error())
-		// }
-		// // Writes to new file Note: Change and put outside loop
-		// err = ioutil.WriteFile("doc3.json", outputFile, 0644)
-		// if err != nil {
-		// 	log.Fatalf("Error reading file!: %s", err.Error())
-		// }
+		keyTemp = append(keyTemp, v.(map[string]interface{})["doc"])
+
 	}
 
+	finalMap := make(map[string]interface{})
+
+	finalMap["docs"] = keyTemp
+
 	// Marshals file and indents in typical Json Format
-	outputFile, err := json.MarshalIndent(keyTemp, "", "  ")
+	outputFile, err := json.MarshalIndent(finalMap, "", "  ")
 	if err != nil {
 		log.Fatalf("Error reading file!: %s", err.Error())
 	}
+
 	// Writes to new file Note: Change and put outside loop
 	err = ioutil.WriteFile("doc1.json", outputFile, 0644)
 	if err != nil {
 		log.Fatalf("Error reading file!: %s", err.Error())
 	}
-
-	// for i := 0; i < len(keyTemp); i++ {
-	// 	// Deletes "_rev" fields in document
-	// 	delete(data["rows"].([]interface{})[i].(map[string]interface{})["doc"].(map[string]interface{}), "_rev")
-
-	// 	// Test variable I used to test the output and see if "_rev" was being returned in array
-	// 	// keyTemp[i] = data["rows"].([]interface{})[i].(map[string]interface{})["doc"].(map[string]interface{})["_rev"]
-
-	// 	// Grabs just the "doc" struct
-	// 	keyTemp[i] = data["rows"].([]interface{})[i].(map[string]interface{})["doc"]
-
-	// 	// Marshals file and indents in typical Json Format
-	// 	outputFile, err := json.MarshalIndent(keyTemp, "", "  ")
-	// 	if err != nil {
-	// 		log.Fatalf("Error reading file!: %s", err.Error())
-	// 	}
-	// 	// Writes to new file
-	// 	err = ioutil.WriteFile("doc1.json", outputFile, 0644)
-	// 	if err != nil {
-	// 		log.Fatalf("Error reading file!: %s", err.Error())
-	// 	}
-	// }
-
 }
-
-// func read2() {
-// 	fileRead, err := ioutil.ReadFile("doc1.json")
-// 	if err != nil {
-// 		log.Fatalf("Error reading file!: %s", err.Error())
-// 	}
-// 	// fmt.Println("hello", fileRead)
-
-// 	var data []interface{}
-
-// 	err = json.Unmarshal([]byte(fileRead), &data)
-// 	if err != nil {
-// 		log.Fatalf("Error reading file!: %s", err.Error())
-// 	}
-// 	// fmt.Println("hello", data[2])
-
-// 	// var data2 map[string]interface{}
-
-// 	// Grabs key "doc" from nested struct dbDoc
-// 	// key := data["_rev"]
-// 	// defer fmt.Println(key, "hello")
-
-// 	// Note: 311 Unused aka Null
-// 	// keyTemp := make([]interface{}, 1000)
-
-// }
