@@ -62,29 +62,64 @@ func read1() {
 
 	// Used to temporarily store value of each array before marshalling and writing it to a new file.
 	// Note: 311 Unused aka Null
-	keyTemp := make([]interface{}, 688)
 
-	for i := 0; i < len(keyTemp); i++ {
+	// Array of Map Interfaces
+	keyTemp := make([]interface{}, 0)
+
+	for _, v := range data["rows"].([]interface{}) {
 		// Deletes "_rev" fields in document
-		delete(data["rows"].([]interface{})[i].(map[string]interface{})["doc"].(map[string]interface{}), "_rev")
+		delete(v.(map[string]interface{})["doc"].(map[string]interface{}), "_rev")
 
 		// Test variable I used to test the output and see if "_rev" was being returned in array
 		// keyTemp[i] = data["rows"].([]interface{})[i].(map[string]interface{})["doc"].(map[string]interface{})["_rev"]
-
+		keyTemp = append(keyTemp, v.(map[string]interface{})["doc"])
 		// Grabs just the "doc" struct
-		keyTemp[i] = data["rows"].([]interface{})[i].(map[string]interface{})["doc"]
+		// keyTemp[i] = data["rows"].([]interface{})[i].(map[string]interface{})["doc"]
 
 		// Marshals file and indents in typical Json Format
-		outputFile, err := json.MarshalIndent(keyTemp, "", "  ")
-		if err != nil {
-			log.Fatalf("Error reading file!: %s", err.Error())
-		}
-		// Writes to new file
-		err = ioutil.WriteFile("doc9.json", outputFile, 0644)
-		if err != nil {
-			log.Fatalf("Error reading file!: %s", err.Error())
-		}
+		// outputFile, err := json.MarshalIndent(keyTemp, "", "  ")
+		// if err != nil {
+		// 	log.Fatalf("Error reading file!: %s", err.Error())
+		// }
+		// // Writes to new file Note: Change and put outside loop
+		// err = ioutil.WriteFile("doc3.json", outputFile, 0644)
+		// if err != nil {
+		// 	log.Fatalf("Error reading file!: %s", err.Error())
+		// }
 	}
+
+	// Marshals file and indents in typical Json Format
+	outputFile, err := json.MarshalIndent(keyTemp, "", "  ")
+	if err != nil {
+		log.Fatalf("Error reading file!: %s", err.Error())
+	}
+	// Writes to new file Note: Change and put outside loop
+	err = ioutil.WriteFile("doc1.json", outputFile, 0644)
+	if err != nil {
+		log.Fatalf("Error reading file!: %s", err.Error())
+	}
+
+	// for i := 0; i < len(keyTemp); i++ {
+	// 	// Deletes "_rev" fields in document
+	// 	delete(data["rows"].([]interface{})[i].(map[string]interface{})["doc"].(map[string]interface{}), "_rev")
+
+	// 	// Test variable I used to test the output and see if "_rev" was being returned in array
+	// 	// keyTemp[i] = data["rows"].([]interface{})[i].(map[string]interface{})["doc"].(map[string]interface{})["_rev"]
+
+	// 	// Grabs just the "doc" struct
+	// 	keyTemp[i] = data["rows"].([]interface{})[i].(map[string]interface{})["doc"]
+
+	// 	// Marshals file and indents in typical Json Format
+	// 	outputFile, err := json.MarshalIndent(keyTemp, "", "  ")
+	// 	if err != nil {
+	// 		log.Fatalf("Error reading file!: %s", err.Error())
+	// 	}
+	// 	// Writes to new file
+	// 	err = ioutil.WriteFile("doc1.json", outputFile, 0644)
+	// 	if err != nil {
+	// 		log.Fatalf("Error reading file!: %s", err.Error())
+	// 	}
+	// }
 
 }
 
