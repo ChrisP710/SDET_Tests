@@ -50,28 +50,20 @@ func TestWalk(t *testing.T) {
 			[]string{"Chris", "London"},
 		},
 		{
-			"Slices",
+			"slices",
 			[]Profile{
 				{33, "London"},
-				{34, "Reykjavik"},
+				{34, "Reykjavík"},
 			},
-			[]string{"London", "Reykjavik"},
+			[]string{"London", "Reykjavík"},
 		},
 		{
-			"Arrays",
+			"arrays",
 			[2]Profile{
 				{33, "London"},
-				{34, "Reykjavik"},
+				{34, "Reykjavík"},
 			},
-			[]string{"London", "Reykjavik"},
-		},
-		{
-			"Maps",
-			map[string]string{
-				"Foo": "Bar",
-				"Baz": "Boz",
-			},
-			[]string{"Bar", "Boz"},
+			[]string{"London", "Reykjavík"},
 		},
 	}
 
@@ -88,6 +80,21 @@ func TestWalk(t *testing.T) {
 		})
 	}
 
+	t.Run("with maps", func(t *testing.T) {
+		aMap := map[string]string{
+			"Foo": "Bar",
+			"Baz": "Boz",
+		}
+
+		var got []string
+		walk(aMap, func(input string) {
+			got = append(got, input)
+		})
+
+		assertContains(t, got, "Bar")
+		assertContains(t, got, "Boz")
+	})
+
 	t.Run("with channels", func(t *testing.T) {
 		aChannel := make(chan Profile)
 
@@ -101,7 +108,7 @@ func TestWalk(t *testing.T) {
 		want := []string{"Berlin", "Katowice"}
 
 		walk(aChannel, func(input string) {
-			t.Errorf("got %v, want %v", got, want)
+			got = append(got, input)
 		})
 
 		if !reflect.DeepEqual(got, want) {
@@ -127,7 +134,17 @@ func TestWalk(t *testing.T) {
 	})
 }
 
-func assertContains(t *testing.T, haystack []string, needle string) {
+type Person struct {
+	Name    string
+	Profile Profile
+}
+
+type Profile struct {
+	Age  int
+	City string
+}
+
+func assertContains(t testing.TB, haystack []string, needle string) {
 	t.Helper()
 	contains := false
 	for _, x := range haystack {
@@ -138,14 +155,4 @@ func assertContains(t *testing.T, haystack []string, needle string) {
 	if !contains {
 		t.Errorf("expected %+v to contain %q but it didn't", haystack, needle)
 	}
-}
-
-type Person struct {
-	Name    string
-	Profile Profile
-}
-
-type Profile struct {
-	Age  int
-	City string
 }
