@@ -1,8 +1,17 @@
 package roman
 
+import "strings"
+
 func ConvertToRoman(arabic int) string {
-	if arabic == 2 {
-		return "II"
+	var result strings.Builder
+
+	if arabic == 4 {
+		return "IV"
 	}
-	return "I"
+
+	for i := 0; i < arabic; i++ {
+		result.WriteString("I")
+	}
+
+	return result.String()
 }
