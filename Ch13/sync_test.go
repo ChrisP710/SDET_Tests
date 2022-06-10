@@ -1,6 +1,7 @@
-package sync
+package sync1
 
 import (
+	"sync"
 	"testing"
 )
 
@@ -22,11 +23,11 @@ func TestCounter(t *testing.T) {
 		var wg sync.WaitGroup
 		wg.Add(wantedCount)
 
-		for i := 0; i < wanteCount; i++ {
+		for i := 0; i < wantedCount; i++ {
 			go func(w *sync.WaitGroup) {
 				counter.Inc()
 				w.Done()
-			}
+			}(&wg)
 		}
 	})
 }
@@ -38,6 +39,6 @@ func assertCounter(t *testing.T, got *Counter, want int) {
 	}
 }
 
-func NewCounter() *counter {
+func NewCounter() *Counter {
 	return &Counter{}
 }

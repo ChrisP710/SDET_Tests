@@ -1,13 +1,15 @@
-package sync
+package sync1
+
+import "sync"
 
 type Counter struct {
-	mu sync.Mutex
+	mu    sync.Mutex
 	value int
 }
 
 func (c *Counter) Inc() {
 	c.mu.Lock()
-	defer.c.mu.Unlock()
+	defer c.mu.Unlock()
 	c.value++
 }
 
