@@ -86,7 +86,7 @@ func read1() {
 	}
 
 	// Writes to new file Note: Change and put outside loop
-	err = ioutil.WriteFile("docDataDB.json", outputFile, 0644)
+	err = ioutil.WriteFile("exclaimerStagingSeedDB.json", outputFile, 0644)
 	if err != nil {
 		log.Fatalf("Error reading file!: %s", err.Error())
 	}
