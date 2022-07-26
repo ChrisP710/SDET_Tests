@@ -39,7 +39,7 @@ func main() {
 }
 
 func read1() {
-	fileRead, err := ioutil.ReadFile("cpdata.json")
+	fileRead, err := ioutil.ReadFile("exclaimerStagingSeedDB_JulyCNP.json")
 	if err != nil {
 		log.Fatalf("Error reading file!: %s", err.Error())
 	}
@@ -86,7 +86,7 @@ func read1() {
 	}
 
 	// Writes to new file Note: Change and put outside loop
-	err = ioutil.WriteFile("exclaimerStagingSeedDB.json", outputFile, 0644)
+	err = ioutil.WriteFile("exclaimerStagingSeedDB_JulyCNP2.json", outputFile, 0644)
 	if err != nil {
 		log.Fatalf("Error reading file!: %s", err.Error())
 	}
